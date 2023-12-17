@@ -1,8 +1,6 @@
 #include "monty.h"
 
-stack_t *stack;
-
-stack = NULL;
+stack_t *stack = NULL;
 
 /**
  * push - Pushes an element onto the stack
@@ -14,9 +12,8 @@ stack = NULL;
 
 void push(int value)
 {
-    stack_t *new_node;
-
-    new_node = malloc(sizeof(stack_t));
+   	stack_t *new_node = malloc(sizeof(stack_t));
+   	
     if (new_node == NULL)
     {
         fprintf(stderr, "Error: malloc failed\n");
@@ -44,9 +41,8 @@ void push(int value)
 
 void pall()
 {
-    stack_t *temp;
+ 	stack_t *temp = stack;
 
-    temp = stack;
     while (temp != NULL)
     {
         printf("%d\n", temp->n);
@@ -62,15 +58,14 @@ void pall()
 
 void pop()
 {
-	stack_t *temp;
-
     if (stack == NULL)
     {
         fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
         exit(EXIT_FAILURE);
     }
 
-    temp = stack;
+    stack_t *temp = stack;
+
     stack = stack->next;
 
     if (stack != NULL)
