@@ -6,34 +6,48 @@
  * @value: value to be pushed
  */
 
-void push(stack_t **stack, int value)
+void push(stack_t **stack, const char *argument, unsigned int line_number)
 {
-	stack_t *new_node;
+    int value;
+    char *endptr;
+    stack_t *new_node;
 
-	new_node = malloc(sizeof(stack_t));
+    value = 0;
 
-	if (new_node == NULL)
-	{
-		fprintf(stderr, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
+    if (!argument || *argument == '\0')
+    {
+        fprintf(stderr, "L%d: usage: push integer\n", line_number);
+        exit(EXIT_FAILURE);
+    }
 
-	if (*stack == NULL)
-	{
-		new_node->prev = NULL;
-		new_node->next = NULL;  
-		*stack = new_node;
-	}
+    value = strtol(argument, &endptr, 10);
 
-	else
-	{
-		new_node->n = value;
-		new_node->prev = NULL;
-		new_node->next = *stack;
-		*stack = new_node;
-	}
+    if (*endptr != '\0')
+    {
+        fprintf(stderr, "L%d: usage: push integer\n", line_number);
+        exit(EXIT_FAILURE);
+    }
 
+    new_node = malloc(sizeof(stack_t));
+
+    if (new_node == NULL)
+    {
+        fprintf(stderr, "Error: malloc failed\n");
+        exit(EXIT_FAILURE);
+    }
+
+    new_node->n = value;
+    new_node->prev = NULL;
+    new_node->next = *stack;
+
+    if (*stack != NULL)
+    {
+        (*stack)->prev = new_node;
+    }
+
+    *stack = new_node;
 }
+
 
 /**
  * pall - print values in stack from top down

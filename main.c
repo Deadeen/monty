@@ -16,14 +16,14 @@ int main(int argc, char *argv[])
     if (argc != 2)
     {
         fprintf(stderr, "USAGE: monty file\n");
-        return (EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     file = fopen(argv[1], "r");
     if (file == NULL)
     {
         fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-        return (EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     process_file(file);
@@ -41,22 +41,22 @@ int main(int argc, char *argv[])
 
 void process_file(FILE *file)
 {
-    char *line = NULL;
-    size_t len, read, end_of_file;
+    char *line, *opcode, *argument;
+    size_t len;
     unsigned int line_number;
-    stack_t *stack = NULL;
-    int value;
-    char *opcode, *argument;
+    stack_t *stack;
 
+    line = NULL;
+    stack = NULL;
     line_number = 0;
     len = 0;
-    end_of_file = -1;
 
-    while ((read = getline(&line, &len, file)) != end_of_file)
+    while (getline(&line, &len, file) != -1)
     {
         line_number++;
 
         opcode = strtok(line, " \n\t");
+
         if (opcode == NULL || opcode[0] == '#')
             continue;
 
@@ -70,8 +70,7 @@ void process_file(FILE *file)
                 free(line);
                 exit(EXIT_FAILURE);
             }
-            value = atoi(argument);
-            push(&stack, value);
+            push(&stack, argument, line_number);
         }
         else if (strcmp(opcode, "pall") == 0)
         {
@@ -88,6 +87,13 @@ void process_file(FILE *file)
     free(line);
     free_stack(stack);
 }
+
+/**
+ * free_stack - frees stack
+ * @head: pointer to the head
+ *
+ * Return: NULL
+ */
 
 void free_stack(stack_t *head)
 {
