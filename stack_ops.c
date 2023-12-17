@@ -12,25 +12,25 @@ stack_t *stack = NULL;
 
 void push(int value)
 {
-   	stack_t *new_node = malloc(sizeof(stack_t));
+	stack_t *new_node = malloc(sizeof(stack_t));
 
-    if (new_node == NULL)
-    {
-        fprintf(stderr, "Error: malloc failed\n");
-        exit(EXIT_FAILURE);
-    }
-    new_node->n = value;
-    new_node->prev = NULL;
+	if (new_node == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+	new_node->n = value;
+	new_node->prev = NULL;
 
-    if (stack != NULL)
-    {
-        new_node->next = stack;
-        stack->prev = new_node;
-    }
-    else
-    	new_node->next = NULL;
+	if (stack != NULL)
+	{
+		new_node->next = stack;
+		stack->prev = new_node;
+	}
+	else
+		new_node->next = NULL;
 
-    stack = new_node;
+	stack = new_node;
 }
 
 /**
@@ -41,13 +41,13 @@ void push(int value)
 
 void pall()
 {
- 	stack_t *temp = stack;
+	stack_t *temp = stack;
 
-    while (temp != NULL)
-    {
-        printf("%d\n", temp->n);
-        temp = temp->next;
-    }
+	while (temp != NULL)
+	{
+		printf("%d\n", temp->n);
+		temp = temp->next;
+	}
 }
 
 /**
@@ -58,22 +58,21 @@ void pall()
 
 void pop()
 {
-    if (stack == NULL)
-    {
-        fprintf(stderr, "Error: Stack empty\n");
-        exit(EXIT_FAILURE);
-    }
+	stack_t *temp = stack;
+	if (stack == NULL)
+	{
+		fprintf(stderr, "Error: Stack empty\n");
+		exit(EXIT_FAILURE);
+	} 
 
-    stack_t *temp = stack;
+	if (stack->next != NULL)
+	{
+		stack = stack->next;
+		stack->prev = NULL;
+	} 
 
-    if (stack->next != NULL)
-    {
-        stack = stack->next;
-        stack->prev = NULL;
-    } 
-    
-    else
-        stack = NULL;
+	else
+		stack = NULL;
 
-    free(temp);
+	free(temp);
 }
