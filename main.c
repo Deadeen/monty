@@ -1,25 +1,23 @@
 #include "monty.h"
 
-/* Function to process each line of the file */
 void process_file(FILE *file) {
     char *line = NULL;
     size_t len = 0;
     unsigned int line_number = 0;
-    stack_t *stack = NULL; // Initialize an empty stack
+    stack_t *stack = NULL;
 
-    while (getline(&line, &len, file) != -1) {
+    while (getline(&line, &len, file) != -1)
+    {
         line_number++;
 
-        /* Tokenize the line */
         char *opcode, *argument;
         opcode = strtok(line, " \n\t");
         if (opcode == NULL || opcode[0] == '#') {
-            continue; // Skip if the line is empty or a comment
+            continue;
         }
 
         argument = strtok(NULL, " \n\t");
 
-        /* Execute corresponding operations based on opcodes */
         if (strcmp(opcode, "push") == 0) {
             if (argument == NULL || !isdigit(*argument)) {
                 fprintf(stderr, "L%d: usage: push integer\n", line_number);
@@ -38,7 +36,6 @@ void process_file(FILE *file) {
     }
 
     free(line);
-    /* Free the stack if needed before exiting */
 }
 
 /**
@@ -61,7 +58,6 @@ int main(int argc, char *argv[]) {
         return (EXIT_FAILURE);
     }
 
-    /* Process the file */
     process_file(file);
 
     fclose(file);
