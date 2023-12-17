@@ -33,10 +33,15 @@ typedef struct instruction_s
 void push(int value);
 void pall();
 void pop();
+void pint(int line_number);
+void swap(int line_number);
+void add(int line_number);
+void nop(int line_number);
 
 /* Function Prototypes main file*/
 void handle_instruction(const char* instruction, const char* argument, int line_number);
 void process_file(const char* file_path);
+
 
 
 #endif /* MONTY_H */

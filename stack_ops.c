@@ -71,9 +71,82 @@ void pop()
         stack = stack->next;
         stack->prev = NULL;
     } 
-    
+
     else
         stack = NULL;
 
     free(temp);
 }
+
+
+
+/**
+ * pint - Prints the value at the top of the stack
+ * @line_number: The line number in the bytecode file
+ *
+ */
+
+void pint(int line_number)
+{
+    if (stack == NULL)
+    {
+        fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+    printf("%d\n", stack->n);
+}
+
+/**
+ * swap - Swaps the top two elements of the stack
+ * @line_number: The line number in the bytecode file
+ *
+ */
+
+void swap(int line_number)
+{
+	int temp;
+
+    if (stack == NULL || stack->next == NULL)
+    {
+        fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    temp = stack->n;
+    stack->n = stack->next->n;
+    stack->next->n = temp;
+}
+
+
+/**
+ * add - Adds the top two elements of the stack
+ * @line_number: The line number in the bytecode file
+ */
+
+void add(int line_number)
+{
+	int sum;
+
+    if (stack == NULL || stack->next == NULL)
+    {
+        fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    sum = stack->n + stack->next->n;
+    pop();
+    stack->n = sum;
+}
+
+/**
+ * nop - Does nothing
+ * @line_number: The line number in the bytecode file
+ *
+ */
+
+void nop(int line_number)
+{
+    (void)line_number;
+}
+
+

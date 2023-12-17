@@ -48,6 +48,14 @@ void handle_instruction(const char* instruction, const char* argument, int line_
         pall();
     else if (strcmp(instruction, "pop") == 0)
         pop();
+    else if (strcmp(instruction, "pint") == 0)
+        pint(line_number);
+    else if (strcmp(instruction, "swap") == 0)
+        swap(line_number);
+    else if (strcmp(instruction, "add") == 0)
+        add(line_number);
+    else if (strcmp(instruction, "nop") == 0)
+        nop(line_number);
     else
     {
         fprintf(stderr, "L%d: unknown instruction %s\n", line_number, instruction);
