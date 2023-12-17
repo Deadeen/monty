@@ -48,7 +48,7 @@ void process_file(FILE *file)
     char *opcode, *argument;
 
     line_number = 0;
-    
+
     while (getline(&line, &len, file) != -1)
     {
         line_number++;
@@ -72,7 +72,7 @@ void process_file(FILE *file)
         }
         else if (strcmp(opcode, "pall") == 0)
         {
-            pall(&stack, line_number);
+            pall(&stack);
         }
         else
         {
