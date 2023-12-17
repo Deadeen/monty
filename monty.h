@@ -32,6 +32,7 @@ void pall(stack_t **stack);
 /* Function Prototypes main file*/
 void process_file(FILE *file);
 void free_stack(stack_t *head);
+ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 
 
 #endif /* MONTY_H */
