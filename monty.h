@@ -32,7 +32,7 @@ typedef struct instruction_s
 /* Function Prototypes stack operations file*/
 void push(int value);
 void pall();
-void pop();
+void pop(int line_number);
 void pint(int line_number);
 void swap(int line_number);
 void add(int line_number);

@@ -56,7 +56,7 @@ void pall()
  * This function removes the top element from the stack if it's not empty.
  */
 
-void pop()
+void pop(int line_number)
 {
 	stack_t *temp = stack;
 	if (stack == NULL)
