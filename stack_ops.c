@@ -70,10 +70,7 @@ void pop(int line_number)
 	{
 		stack = stack->next;
 		stack->prev = NULL;
-	} 
-
-	else
-		stack = NULL;
+	}
 
 	free(temp);
 }
