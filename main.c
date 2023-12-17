@@ -9,95 +9,84 @@
  * Return: exit status
  */
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-    FILE *file;
-
     if (argc != 2)
     {
         fprintf(stderr, "USAGE: monty file\n");
-        return EXIT_FAILURE;
+        return (EXIT_FAILURE);
     }
 
-    file = fopen(argv[1], "r");
-    if (file == NULL)
-    {
-        fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-        return EXIT_FAILURE;
-    }
+    process_file(argv[1]);
 
-    process_file(file);
-
-    fclose(file);
-    return EXIT_SUCCESS;
+    return (EXIT_SUCCESS);
 }
 
 /**
- * process_file - file handling function
- * @file: file to be handled 
+ * handle_instruction - Handles Monty bytecode instructions
+ * @instruction: The instruction to be handled
+ * @argument: The argument associated with the instruction (if any)
+ * @line_number: The line number in the bytecode file
  *
- * Return: NULL
  */
 
-void process_file(FILE *file)
+void handle_instruction(const char* instruction, const char* argument, int line_number)
 {
-    char *line, *opcode, *argument;
-    size_t len;
-    unsigned int line_number;
-    stack_t *stack;
-    int end_of_file;
+    int value;
 
-    line = NULL;
-    stack = NULL;
-    line_number = 0;
-    len = 0;
-    end_of_file =(int)getline(&line, &len, file);
-
-    while (end_of_file != -1)
+    if (strcmp(instruction, "push") == 0)
     {
-        line_number++;
-
-        opcode = strtok(line, " \n\t");
-
-        if (opcode == NULL || opcode[0] == '#')
-            continue;
-
-        argument = strtok(NULL, " \n\t");
-
-        if (strcmp(opcode, "push") == 0)
+        if (argument == NULL)
         {
-            push(&stack, argument, line_number);
-        }
-        else if (strcmp(opcode, "pall") == 0)
-        {
-            pall(&stack);
-        }
-        else
-        {
-            fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
-            free(line);
+            fprintf(stderr, "L%d: usage: push integer\n", line_number);
             exit(EXIT_FAILURE);
         }
+        value = atoi(argument);
+        push(value);
     }
-
-    free(line);
-    free_stack(stack);
+    else if (strcmp(instruction, "pall") == 0)
+        pall();
+    else if (strcmp(instruction, "pop") == 0)
+        pop();
+    else
+    {
+        fprintf(stderr, "L%d: unknown instruction %s\n", line_number, instruction);
+        exit(EXIT_FAILURE);
+    }
 }
 
 /**
- * free_stack - frees stack
- * @head: pointer to the head
+ * process_file - Processes the Monty bytecode file
+ * @file_path: Path to the Monty bytecode file
  *
- * Return: NULL
  */
 
-void free_stack(stack_t *head)
+void process_file(const char* file_path)
 {
-    stack_t *tmp;
+    FILE* file;
+    char buffer[MAX_BUFFER_SIZE];
+    int line_number;
+    char* token;
 
-    while (head != NULL) {
-        tmp = head;
-        head = head->next;
-        free(tmp);
+    line_number = 1;
+
+    file = fopen(file_path, "r");
+
+    if (file == NULL)
+    {
+        fprintf(stderr, "Error: Can't open file %s\n", file_path);
+        exit(EXIT_FAILURE);
     }
+
+    while (fgets(buffer, sizeof(buffer), file) != NULL)
+    {
+        token = strtok(buffer, " \n");
+        if (token != NULL && token[0] != '#')
+        {
+            handle_instruction(token, NULL, line_number);
+        }
+        line_number++;
+    }
+
+    fclose(file);
 }
