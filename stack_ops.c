@@ -59,6 +59,7 @@ void pall()
 void pop(int line_number)
 {
 	stack_t *temp = stack;
+	
 	if (stack == NULL)
 	{
 		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
