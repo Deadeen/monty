@@ -12,25 +12,25 @@ stack_t *stack = NULL;
 
 void push(int value)
 {
-   	stack_t *new_node = malloc(sizeof(stack_t));
+	stack_t *new_node = malloc(sizeof(stack_t));
 
-    if (new_node == NULL)
-    {
-        fprintf(stderr, "Error: malloc failed\n");
-        exit(EXIT_FAILURE);
-    }
-    new_node->n = value;
-    new_node->prev = NULL;
+	if (new_node == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+	new_node->n = value;
+	new_node->prev = NULL;
 
-    if (stack != NULL)
-    {
-        new_node->next = stack;
-        stack->prev = new_node;
-    }
-    else
-    	new_node->next = NULL;
+	if (stack != NULL)
+	{
+		new_node->next = stack;
+		stack->prev = new_node;
+	}
+	else
+		new_node->next = NULL;
 
-    stack = new_node;
+	stack = new_node;
 }
 
 /**
@@ -41,13 +41,13 @@ void push(int value)
 
 void pall()
 {
- 	stack_t *temp = stack;
+	stack_t *temp = stack;
 
-    while (temp != NULL)
-    {
-        printf("%d\n", temp->n);
-        temp = temp->next;
-    }
+	while (temp != NULL)
+	{
+		printf("%d\n", temp->n);
+		temp = temp->next;
+	}
 }
 
 /**
@@ -58,27 +58,24 @@ void pall()
 
 void pop()
 {
-    if (stack == NULL)
-    {
-        fprintf(stderr, "Error: Stack empty\n");
-        exit(EXIT_FAILURE);
-    }
+	stack_t *temp = stack;
+	if (stack == NULL)
+	{
+		fprintf(stderr, "Error: Stack empty\n");
+		exit(EXIT_FAILURE);
+	} 
 
-    stack_t *temp = stack;
+	if (stack->next != NULL)
+	{
+		stack = stack->next;
+		stack->prev = NULL;
+	} 
 
-    if (stack->next != NULL)
-    {
-        stack = stack->next;
-        stack->prev = NULL;
-    } 
+	else
+		stack = NULL;
 
-    else
-        stack = NULL;
-
-    free(temp);
+	free(temp);
 }
-
-
 
 /**
  * pint - Prints the value at the top of the stack
@@ -88,12 +85,12 @@ void pop()
 
 void pint(int line_number)
 {
-    if (stack == NULL)
-    {
-        fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
-        exit(EXIT_FAILURE);
-    }
-    printf("%d\n", stack->n);
+	if (stack == NULL)
+	{
+		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	printf("%d\n", stack->n);
 }
 
 /**
@@ -106,15 +103,15 @@ void swap(int line_number)
 {
 	int temp;
 
-    if (stack == NULL || stack->next == NULL)
-    {
-        fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
-        exit(EXIT_FAILURE);
-    }
+	if (stack == NULL || stack->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
 
-    temp = stack->n;
-    stack->n = stack->next->n;
-    stack->next->n = temp;
+	temp = stack->n;
+	stack->n = stack->next->n;
+	stack->next->n = temp;
 }
 
 
@@ -127,15 +124,15 @@ void add(int line_number)
 {
 	int sum;
 
-    if (stack == NULL || stack->next == NULL)
-    {
-        fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
-        exit(EXIT_FAILURE);
-    }
+	if (stack == NULL || stack->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
 
-    sum = stack->n + stack->next->n;
-    pop();
-    stack->n = sum;
+	sum = stack->n + stack->next->n;
+	pop();
+	stack->n = sum;
 }
 
 /**
@@ -146,7 +143,7 @@ void add(int line_number)
 
 void nop(int line_number)
 {
-    (void)line_number;
+	(void)line_number;
 }
 
 
