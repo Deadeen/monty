@@ -8,36 +8,37 @@
 
 void push(stack_t **stack, char *argument, unsigned int line_number)
 {
-    int value;
+	int value;
+	stack_t *new_node;
 
-    if (argument == NULL)
-    {
-        fprintf(stderr, "L%d: usage: push integer\n", line_number);
-        exit(EXIT_FAILURE);
-    }
+	if (argument == NULL)
+	{
+		fprintf(stderr, "L%d: usage: push integer\n", line_number);
+		exit(EXIT_FAILURE);
+	}
 
-    value = atoi(argument);
-    if (value == 0 && *argument != '0')
-    {
-        fprintf(stderr, "L%d: usage: push integer\n", line_number);
-        exit(EXIT_FAILURE);
-    }
+	value = atoi(argument);
+	if (value == 0 && *argument != '0')
+	{
+		fprintf(stderr, "L%d: usage: push integer\n", line_number);
+		exit(EXIT_FAILURE);
+	}
 
-    stack_t *new_node = malloc(sizeof(stack_t));
-    if (new_node == NULL)
-    {
-        fprintf(stderr, "Error: malloc failed\n");
-        exit(EXIT_FAILURE);
-    }
+	new_node = malloc(sizeof(stack_t));
+	if (new_node == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
 
-    new_node->n = value;
-    new_node->prev = NULL;
-    new_node->next = *stack;
+	new_node->n = value;
+	new_node->prev = NULL;
+	new_node->next = *stack;
 
-    if (*stack != NULL)
-        (*stack)->prev = new_node;
+	if (*stack != NULL)
+		(*stack)->prev = new_node;
 
-    *stack = new_node;
+	*stack = new_node;
 }
 
 
