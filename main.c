@@ -45,13 +45,15 @@ void process_file(FILE *file)
     size_t len;
     unsigned int line_number;
     stack_t *stack;
+    int end_of_file;
 
     line = NULL;
     stack = NULL;
     line_number = 0;
     len = 0;
+    end_of_file =(int)getline(&line, &len, file);
 
-    while (getline(&line, &len, file) != -1)
+    while (end_of_file != -1)
     {
         line_number++;
 
