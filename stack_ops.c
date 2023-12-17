@@ -6,30 +6,24 @@
  * @value: value to be pushed
  */
 
-void push(stack_t **stack, const char *argument, unsigned int line_number)
+void push(stack_t **stack, char *argument, unsigned int line_number)
 {
     int value;
-    char *endptr;
-    stack_t *new_node;
 
-    value = 0;
-
-    if (!argument || *argument == '\0')
+    if (argument == NULL)
     {
         fprintf(stderr, "L%d: usage: push integer\n", line_number);
         exit(EXIT_FAILURE);
     }
 
-    value = strtol(argument, &endptr, 10);
-
-    if (*endptr != '\0')
+    value = atoi(argument);
+    if (value == 0 && *argument != '0')
     {
         fprintf(stderr, "L%d: usage: push integer\n", line_number);
         exit(EXIT_FAILURE);
     }
 
-    new_node = malloc(sizeof(stack_t));
-
+    stack_t *new_node = malloc(sizeof(stack_t));
     if (new_node == NULL)
     {
         fprintf(stderr, "Error: malloc failed\n");
@@ -41,9 +35,7 @@ void push(stack_t **stack, const char *argument, unsigned int line_number)
     new_node->next = *stack;
 
     if (*stack != NULL)
-    {
         (*stack)->prev = new_node;
-    }
 
     *stack = new_node;
 }
