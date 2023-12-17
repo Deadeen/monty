@@ -11,25 +11,25 @@
 
 int main(int argc, char *argv[])
 {
-    FILE *file;
+	FILE *file;
 
-    if (argc != 2)
-    {
-        fprintf(stderr, "USAGE: monty file\n");
-        return EXIT_FAILURE;
-    }
+	if (argc != 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		return EXIT_FAILURE;
+	}
 
-    file = fopen(argv[1], "r");
-    if (file == NULL)
-    {
-        fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-        return EXIT_FAILURE;
-    }
+	file = fopen(argv[1], "r");
+	if (file == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		return EXIT_FAILURE;
+	}
 
-    process_file(file);
+	process_file(file);
 
-    fclose(file);
-    return (EXIT_SUCCESS);
+	fclose(file);
+	return (EXIT_SUCCESS);
 }
 
 /**
@@ -41,51 +41,52 @@ int main(int argc, char *argv[])
 
 void process_file(FILE *file)
 {
-    char *line, *opcode, *argument;
-    size_t len;
-    unsigned int line_number;
-    stack_t *stack;
+	char *line, *opcode, *argument;
+	size_t len, end_of_file;
+	unsigned int line_number;
+	stack_t *stack;
 
-    line = NULL;
-    stack = NULL;
-    line_number = 0;
-    len = 0;
+	line = NULL;
+	stack = NULL;
+	line_number = 0;
+	len = 0;
+	end_of_file = -1;
 
-    while (getline(&line, &len, file) != -1)
-    {
-        line_number++;
+	while (getline(&line, &len, file) != end_of_file)
+	{
+		line_number++;
 
-        opcode = strtok(line, " \n\t");
+		opcode = strtok(line, " \n\t");
 
-        if (opcode == NULL || opcode[0] == '#')
-            continue;
+		if (opcode == NULL || opcode[0] == '#')
+			continue;
 
-        argument = strtok(NULL, " \n\t");
+		argument = strtok(NULL, " \n\t");
 
-        if (strcmp(opcode, "push") == 0)
-        {
-            if (argument == NULL)
-            {
-                fprintf(stderr, "L%d: usage: push integer\n", line_number);
-                free(line);
-                exit(EXIT_FAILURE);
-            }
-            push(&stack, argument, line_number);
-        }
-        else if (strcmp(opcode, "pall") == 0)
-        {
-            pall(&stack);
-        }
-        else
-        {
-            fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
-            free(line);
-            exit(EXIT_FAILURE);
-        }
-    }
+		if (strcmp(opcode, "push") == 0)
+		{
+			if (argument == NULL)
+			{
+				fprintf(stderr, "L%d: usage: push integer\n", line_number);
+				free(line);
+				exit(EXIT_FAILURE);
+			}
+			push(&stack, argument, line_number);
+		}
+		else if (strcmp(opcode, "pall") == 0)
+		{
+			pall(&stack);
+		}
+		else
+		{
+			fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
+			free(line);
+			exit(EXIT_FAILURE);
+		}
+	}
 
-    free(line);
-    free_stack(stack);
+	free(line);
+	free_stack(stack);
 }
 
 /**
@@ -97,11 +98,11 @@ void process_file(FILE *file)
 
 void free_stack(stack_t *head)
 {
-    stack_t *tmp;
+	stack_t *tmp;
 
-    while (head != NULL) {
-        tmp = head;
-        head = head->next;
-        free(tmp);
-    }
+	while (head != NULL) {
+		tmp = head;
+		head = head->next;
+		free(tmp);
+	}
 }
