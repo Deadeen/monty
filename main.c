@@ -1,15 +1,22 @@
 #include "monty.h"
 
+/**
+ * main - entry point for monty interpreter
+ * @argc: argument count
+ * @argv: argument vector (array of args)
+ *
+ * Return: exit status
+ */
+
 int main(int argc, char *argv[])
 {
     if (argc != 2)
     {
         fprintf(stderr, "USAGE: monty file\n");
-        return EXIT_FAILURE;
+        return (EXIT_FAILURE);
     }
 
     FILE *file = fopen(argv[1], "r");
-
     if (file == NULL)
     {
         fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
@@ -19,7 +26,7 @@ int main(int argc, char *argv[])
     process_file(file);
 
     fclose(file);
-    return (0);
+    return (EXIT_SUCCESS);
 }
 
 void process_file(FILE *file)
@@ -28,14 +35,7 @@ void process_file(FILE *file)
     size_t len = 0;
     unsigned int line_number = 0;
     stack_t *stack = NULL;
-
-    FILE *file = fopen(argv[1], "r");
-
-    if (!file)
-    {
-        fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-        exit(EXIT_FAILURE);
-    }
+    int value;
 
     while (getline(&line, &len, file) != -1)
     {
@@ -50,21 +50,19 @@ void process_file(FILE *file)
 
         if (strcmp(opcode, "push") == 0)
         {
-            if (argument == NULL || !isdigit(*argument))
+            if (argument == NULL)
             {
                 fprintf(stderr, "L%d: usage: push integer\n", line_number);
                 free(line);
                 exit(EXIT_FAILURE);
             }
-            int value = atoi(argument);
+            value = atoi(argument);
             push(&stack, value);
         }
-
         else if (strcmp(opcode, "pall") == 0)
         {
             pall(&stack, line_number);
         }
-
         else
         {
             fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
@@ -77,23 +75,11 @@ void process_file(FILE *file)
     free_stack(stack);
 }
 
-/**
- * main - entry point for monty interpreter
- * @argc: argument count
- * @argv: argument vector (array of args)
- *
- * Return: exit status
- */
-
 void free_stack(stack_t *head)
 {
     stack_t *tmp;
 
-    if(!head)
-        return;
-
-    while(head != NULL)
-    {
+    while (head != NULL) {
         tmp = head;
         head = head->next;
         free(tmp);
