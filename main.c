@@ -83,7 +83,7 @@ void handle_instruction(const char* instruction, const char* argument, int line_
     else if (strcmp(instruction, "pall") == 0)
         pall();
     else if (strcmp(instruction, "pop") == 0)
-        pop();
+        pop(line_number);
     else if (strcmp(instruction, "pint") == 0)
         pint(line_number);
     else if (strcmp(instruction, "swap") == 0)
