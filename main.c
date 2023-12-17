@@ -42,15 +42,17 @@ int main(int argc, char *argv[])
 void process_file(FILE *file)
 {
     char *line = NULL;
-    size_t len = 0;
+    size_t len, read, end_of_file;
     unsigned int line_number;
     stack_t *stack = NULL;
     int value;
     char *opcode, *argument;
 
     line_number = 0;
+    len = 0;
+    end_of_file = -1;
 
-    while (getline(&line, &len, file) != -1)
+    while ((read = getline(&line, &len, file)) != end_of_file)
     {
         line_number++;
 
