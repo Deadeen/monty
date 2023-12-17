@@ -132,7 +132,7 @@ void add(int line_number)
 	}
 
 	sum = stack->n + stack->next->n;
-	pop(line number);
+	pop(line_number);
 	stack->n = sum;
 }
 
