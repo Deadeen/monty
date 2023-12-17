@@ -23,6 +23,42 @@ int main(int argc, char* argv[])
 }
 
 /**
+ * process_file - Processes the Monty bytecode file
+ * @file_path: Path to the Monty bytecode file
+ *
+ */
+
+void process_file(const char* file_path)
+{
+    FILE* file;
+    char buffer[MAX_BUFFER_SIZE];
+    int line_number;
+    char* token;
+
+    line_number = 1;
+
+    file = fopen(file_path, "r");
+
+    if (file == NULL)
+    {
+        fprintf(stderr, "Error: Can't open file %s\n", file_path);
+        exit(EXIT_FAILURE);
+    }
+
+    while (fgets(buffer, sizeof(buffer), file) != NULL)
+    {
+        token = strtok(buffer, " \n");
+        if (token != NULL && token[0] != '#')
+        {
+            handle_instruction(token, NULL, line_number);
+        }
+        line_number++;
+    }
+
+    fclose(file);
+}
+
+/**
  * handle_instruction - Handles Monty bytecode instructions
  * @instruction: The instruction to be handled
  * @argument: The argument associated with the instruction (if any)
@@ -61,40 +97,4 @@ void handle_instruction(const char* instruction, const char* argument, int line_
         fprintf(stderr, "L%d: unknown instruction %s\n", line_number, instruction);
         exit(EXIT_FAILURE);
     }
-}
-
-/**
- * process_file - Processes the Monty bytecode file
- * @file_path: Path to the Monty bytecode file
- *
- */
-
-void process_file(const char* file_path)
-{
-    FILE* file;
-    char buffer[MAX_BUFFER_SIZE];
-    int line_number;
-    char* token;
-
-    line_number = 1;
-
-    file = fopen(file_path, "r");
-
-    if (file == NULL)
-    {
-        fprintf(stderr, "Error: Can't open file %s\n", file_path);
-        exit(EXIT_FAILURE);
-    }
-
-    while (fgets(buffer, sizeof(buffer), file) != NULL)
-    {
-        token = strtok(buffer, " \n");
-        if (token != NULL && token[0] != '#')
-        {
-            handle_instruction(token, NULL, line_number);
-        }
-        line_number++;
-    }
-
-    fclose(file);
 }
