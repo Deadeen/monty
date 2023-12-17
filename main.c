@@ -10,13 +10,15 @@
 
 int main(int argc, char *argv[])
 {
+    FILE *file;
+
     if (argc != 2)
     {
         fprintf(stderr, "USAGE: monty file\n");
         return (EXIT_FAILURE);
     }
 
-    FILE *file = fopen(argv[1], "r");
+    file = fopen(argv[1], "r");
     if (file == NULL)
     {
         fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
@@ -29,19 +31,28 @@ int main(int argc, char *argv[])
     return (EXIT_SUCCESS);
 }
 
+/**
+ * process_file - file handling function
+ * @file: file to be handled 
+ *
+ * Return: NULL
+ */
+
 void process_file(FILE *file)
 {
     char *line = NULL;
     size_t len = 0;
-    unsigned int line_number = 0;
+    unsigned int line_number;
     stack_t *stack = NULL;
     int value;
+    char *opcode, *argument;
 
+    line_number = 0;
+    
     while (getline(&line, &len, file) != -1)
     {
         line_number++;
 
-        char *opcode, *argument;
         opcode = strtok(line, " \n\t");
         if (opcode == NULL || opcode[0] == '#')
             continue;
