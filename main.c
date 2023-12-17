@@ -1,5 +1,27 @@
 #include "monty.h"
 
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+    {
+        fprintf(stderr, "USAGE: monty file\n");
+        return EXIT_FAILURE;
+    }
+
+    FILE *file = fopen(argv[1], "r");
+
+    if (file == NULL)
+    {
+        fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+        return (EXIT_FAILURE);
+    }
+
+    process_file(file);
+
+    fclose(file);
+    return (0);
+}
+
 void process_file(FILE *file)
 {
     char *line = NULL;
@@ -37,7 +59,7 @@ void process_file(FILE *file)
             int value = atoi(argument);
             push(&stack, value);
         }
-        
+
         else if (strcmp(opcode, "pall") == 0)
         {
             pall(&stack, line_number);
@@ -62,28 +84,6 @@ void process_file(FILE *file)
  *
  * Return: exit status
  */
-
-int main(int argc, char *argv[])
-{
-    if (argc != 2)
-    {
-        fprintf(stderr, "USAGE: monty file\n");
-        return EXIT_FAILURE;
-    }
-
-    FILE *file = fopen(argv[1], "r");
-
-    if (file == NULL)
-    {
-        fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-        return (EXIT_FAILURE);
-    }
-
-    process_file(file);
-
-    fclose(file);
-    return (0);
-}
 
 void free_stack(stack_t *head)
 {
